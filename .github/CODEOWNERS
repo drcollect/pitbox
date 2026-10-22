@@ -1,0 +1,35 @@
+# Every change needs the maintainer's review. The protected core is listed again on its own lines so the rule stays
+# when other owners are added for the rest (CONTRIBUTING.md, "The protected core").
+*                                                   @drcollect
+
+# The run path: the run sheet, the run policy, the clean shell, the spawn, the sandbox profile, Fetch file.
+/Sources/PitboxConsole/Commands/                    @drcollect
+/Sources/PitboxConsole/Fetch/                       @drcollect
+/Sources/pitbox-command-helper/                     @drcollect
+
+# The command reader and its vectors.
+/Sources/PitboxKit/CommandClassifier.swift          @drcollect
+/Sources/PitboxKit/CommandClassifier/               @drcollect
+/Sources/PitboxKit/CommandPatterns.swift            @drcollect
+/Sources/PitboxKit/CommandOffer.swift               @drcollect
+/Sources/PitboxKit/ShellCommandScanner.swift        @drcollect
+/Tests/PitboxKitTests/ShellVectors.swift            @drcollect
+/Sources/PitboxSessions/Data/OfferExtraction.swift  @drcollect
+/Sources/PitboxSessions/Data/SSHConfig.swift        @drcollect
+/Sources/PitboxKit/Paths.swift                      @drcollect
+/Sources/PitboxConsole/LinkPolicy.swift             @drcollect
+
+# The window guard and the dock link.
+/Sources/PitboxGuard/                               @drcollect
+/Sources/PitboxDock/                                @drcollect
+/docs/DOCK_PROTOCOL.md                              @drcollect
+
+# Building and signing, and the pinned dependencies.
+/scripts/build.sh                                   @drcollect
+/scripts/make-dev-cert.sh                           @drcollect
+/Package.swift                                      @drcollect
+/Package.resolved                                   @drcollect
+
+# The security documents.
+/SECURITY.md                                        @drcollect
+/docs/THREAT_MODEL.md                               @drcollect
