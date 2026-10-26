@@ -98,8 +98,10 @@ connection with `bye` `settings` and closes it; Pitbox does not keep a socket bo
 
 ### 2.4 Finding each other without polling
 
-- The host watches the workspace's launch and quit notices for the guest's bundle id and connects when the guest
-  launches. While the guest's process exists (kqueue `NOTE_EXIT` on its pid ends the watch), the host retries a failed
+- The host watches the list of running applications for the guest's bundle id (on macOS, key-value observing of
+  `NSWorkspace.shared.runningApplications`) and connects when the guest appears. It must not rely on the workspace's
+  launch notice (`didLaunchApplicationNotification`): macOS does not post it for apps with `LSUIElement`, and Pitbox is
+  one. At its own start the host also checks the apps already running. While the guest's process exists (kqueue `NOTE_EXIT` on its pid ends the watch), the host retries a failed
   or closed connection with backoff: 0.2, 0.5, 1, 2, 4, 8, 16, then every 30 s.
 - **No stall at launch:** while the guest's process is younger than 10 s (its start time, `proc_pidinfo`), the host
   retries every 0.2 s whatever ended the last attempt (a failed connect, `busy`, `bye`, a handshake timeout, a
@@ -497,7 +499,7 @@ Sent before a normal close; the sender closes right after it. The receiver ends 
 | Event | Host | Guest |
 | --- | --- | --- |
 | Guest quits | Gets `bye` or end of file; drops the docked area at once (its own strip alone again) | (gone) |
-| Guest crashes | End of file (and `NOTE_EXIT`), same as quit; reconnects at the next launch notice | (gone; the system removes its windows) |
+| Guest crashes | End of file (and `NOTE_EXIT`), same as quit; reconnects when the guest appears again in the running applications | (gone; the system removes its windows) |
 | Guest hangs | No line for 15 s with a ping outstanding: keeps the last area while the guest's process exists (its frozen panel is still on screen) and shows "Pitbox not responding" in its menu | |
 | Host quits or crashes | (gone) | End of file or `NOTE_EXIT`: alone within 1 s: moves to the screen edge, its guard keeps guarding its moved rectangle, the spoken line speaks directly |
 | Host hangs | | No line for 15 s with a ping outstanding: stays docked while the host's process exists; the menu says "<host> not responding" |
